@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Prototype — Teste Técnico</title>
+<meta name="description" content="Protótipo responsivo — versão neutra para teste técnico." />
+<style>
+  /* -----------------------
+     Design tokens / reset
+     ----------------------- */
+  :root{
+    --bg:#f6f8fb;
+    --panel:#ffffff;
+    --muted:#6b7280;
+    --accent:#3366ff;
+    --shadow: 0 8px 24px rgba(19,24,34,0.06);
+    --radius:12px;
+    --gap:16px;
+    --maxw:1200px;
+    --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:var(--font-sans);background:linear-gradient(180deg,#eef2f7, #f6f9fc);
+    color:#0b1220;-webkit-font-smoothing:antialiased;padding:20px;display:flex;justify-content:center;
+  }
+  .wrap{width:100%;max-width:var(--maxw)}
+
+  /* -----------------------
+     Header
+     ----------------------- */
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-mark{width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg,#eef5ff,#dfeaff);display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1a3a}
+  nav{display:flex;gap:8px;align-items:center}
+  .link{background:transparent;border:0;padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+  .cta{background:var(--accent);color:white;padding:8px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+
+  /* -----------------------
+     Main hero + columns (wireframe top)
+     ----------------------- */
+  main{margin-top:18px}
+  .hero{display:grid;grid-template-columns:1fr;gap:16px}
+  .panel{background:var(--panel);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .hero-grid{display:grid;grid-template-columns: 1fr 1fr;gap:12px}
+  /* left column block stack */
+  .stack{display:flex;flex-direction:column;gap:12px}
+  .block{height:120px;border-radius:10px;background:linear-gradient(180deg,#e9eefb,#f7f9ff);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  /* right side main visual */
+  .media{height:254px;border-radius:10px;background:linear-gradient(180deg,#dfefff,#ecf4ff);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700}
+
+  /* -----------------------
+     Icons row (small squares)
+     ----------------------- */
+  .icons-row{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .icon{width:64px;height:64px;border-radius:10px;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700}
+
+  /* -----------------------
+     Strip with cards (carousel-like)
+     ----------------------- */
+  .strip{margin-top:18px}
+  .strip-inner{display:flex;gap:12px;overflow:auto;padding:8px 6px}
+  .card{min-width:160px;background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:10px;flex:0 0 auto}
+  .card .thumb{height:84px;border-radius:8px;background:linear-gradient(180deg,#f0f4ff,#eef6ff);margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+
+  /* -----------------------
+     Large media band with items
+     ----------------------- */
+  .band{margin-top:18px;background:linear-gradient(180deg,#f7f9fb,#eef3fb);padding:14px;border-radius:12px;box-shadow:var(--shadow)}
+  .cards-row{display:flex;gap:12px;overflow:auto;padding:8px 2px}
+  .item-card{width:210px;background:white;border-radius:10px;padding:10px;box-shadow:var(--shadow);flex:0 0 auto}
+  .item-card .img{height:110px;border-radius:8px;background:linear-gradient(180deg,#f3f6ff,#eef5ff);margin-bottom:8px}
+
+  /* -----------------------
+     Two-column blocks
+     ----------------------- */
+  .double{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}
+  .big-block{height:120px;border-radius:10px;background:linear-gradient(180deg,#eef3fb,#f6fafc);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  
+  /* final strip (boxed) */
+  .boxed{margin-top:18px;background:#fff;border-radius:12px;padding:12px;box-shadow:var(--shadow)}
+  .boxed .boxed-inner{display:flex;gap:12px;overflow:auto;padding:6px}
+
+  /* -----------------------
+     Responsive rules
+     ----------------------- */
+  @media(min-width:720px){
+    .hero{grid-template-columns: 1fr 420px}
+    .hero-grid{grid-template-columns: 240px 1fr}
+    .stack .block{height:116px}
+    .media{height:260px}
+    .double{grid-template-columns: 1fr 1fr}
+  }
+  @media(min-width:1000px){
+    .card{min-width:200px}
+    .item-card{width:230px}
+  }
+
+  /* -----------------------
+     Micro interactions
+     ----------------------- */
+  .card, .icon, .item-card{transition:transform .22s, box-shadow .22s}
+  .card:hover, .icon:hover, .item-card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(19,24,34,0.08)}
+  .strip-inner::-webkit-scrollbar, .cards-row::-webkit-scrollbar, .boxed-inner::-webkit-scrollbar{height:8px}
+  .strip-inner::-webkit-scrollbar-thumb, .cards-row::-webkit-scrollbar-thumb, .boxed-inner::-webkit-scrollbar-thumb{background:rgba(11,18,32,0.08);border-radius:8px}
+
+  /* focus visibility for keyboard users */
+  .link:focus, .cta:focus, .card:focus, .item-card:focus{outline:3px solid rgba(51,102,255,0.12);outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Header -->
+    <header>
+      <div class="brand" aria-label="Brand">
+        <div class="brand-mark" aria-hidden="true">CO</div>
+        <div>
+          <div style="font-weight:700">Company</div>
+          <div style="font-size:12px;color:var(--muted)">Protótipo — entrega técnica</div>
+        </div>
+      </div>
+
+      <nav aria-label="Navegação principal">
+        <button class="link" onclick="scrollToSection('projects')">Projetos</button>
+        <button class="link" onclick="scrollToSection('band')">Destaques</button>
+        <button class="cta" onclick="scrollToSection('contact')">Enviar</button>
+      </nav>
+    </header>
+
+    <!-- Main content -->
+    <main>
+      <!-- Hero / top area matching wireframe -->
+      <section class="hero">
+        <div class="panel hero-grid" aria-labelledby="hero-title">
+          <!-- left column: stacked small cards -->
+          <div>
+            <div class="stack" aria-hidden="false">
+              <div class="block" role="img" aria-label="Bloco informativo 1">Bloco 1</div>
+              <div class="block">Bloco 2</div>
+            </div>
+          </div>
+
+          <!-- right column: main visual -->
+          <div>
+            <div class="media" id="hero-title">Mídia principal / Banner</div>
+          </div>
+        </div>
+
+        <!-- icons row just below hero -->
+        <div class="icons-row" aria-hidden="false">
+          <div class="icon">A</div>
+          <div class="icon">B</div>
+          <div class="icon">C</div>
+          <div class="icon">D</div>
+          <div class="icon">E</div>
+          <div class="icon">F</div>
+        </div>
+      </section>
+
+      <!-- horizontal strip of small cards -->
+      <section class="strip" aria-labelledby="strip-title">
+        <h2 id="strip-title" style="font-size:16px;margin:12px 0 6px 0;color:var(--muted)">Recursos rápidos</h2>
+        <div class="strip-inner" id="projects" role="list">
+          <!-- each .card follows wireframe small icons row -->
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb" aria-hidden="true">Preview</div>
+            <div style="font-weight:700">Card 1</div>
+            <div style="font-size:13px;color:var(--muted)">Descrição curta</div>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb">Preview</div>
+            <div style="font-weight:700">Card 2</div>
+            <div style="font-size:13px;color:var(--muted)">Descrição curta</div>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb">Preview</div>
+            <div style="font-weight:700">Card 3</div>
+            <div style="font-size:13px;color:var(--muted)">Descrição curta</div>
+          </article>
+
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb">Preview</div>
+            <div style="font-weight:700">Card 4</div>
+            <div style="font-size:13px;color:var(--muted)">Descrição curta</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- band with horizontally scrollable item cards (wireframe middle) -->
+      <section class="band" id="band" aria-labelledby="band-title">
+        <h3 id="band-title" style="margin:0 0 8px 0;color:var(--muted)">Lista de itens</h3>
+        <div class="cards-row" role="list" aria-label="Lista de cartões">
+          <article class="item-card" role="listitem" tabindex="0">
+            <div class="img" aria-hidden="true">Img</div>
+            <div style="font-weight:700">Item A</div>
+            <div style="font-size:13px;color:var(--muted)">Breve infos</div>
+          </article>
+
+          <article class="item-card" role="listitem" tabindex="0">
+            <div class="img">Img</div>
+            <div style="font-weight:700">Item B</div>
+            <div style="font-size:13px;color:var(--muted)">Breve infos</div>
+          </article>
+
+          <article class="item-card" role="listitem" tabindex="0">
+            <div class="img">Img</div>
+            <div style="font-weight:700">Item C</div>
+            <div style="font-size:13px;color:var(--muted)">Breve infos</div>
+          </article>
+
+          <article class="item-card" role="listitem" tabindex="0">
+            <div class="img">Img</div>
+            <div style="font-weight:700">Item D</div>
+            <div style="font-size:13px;color:var(--muted)">Breve infos</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- two big blocks (wireframe) -->
+      <section class="double">
+        <div class="big-block panel">Bloco grande esquerdo</div>
+        <div class="big-block panel">Bloco grande direito</div>
+      </section>
+
+      <!-- bottom boxed area with cards inside -->
+      <section class="boxed" aria-labelledby="boxed-title">
+        <h4 id="boxed-title" style="margin:0 0 8px 0;color:var(--muted)">Coleção</h4>
+        <div class="boxed-inner" role="list">
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb">Mini</div>
+            <div style="font-weight:700">Coleção 1</div>
+          </article>
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb">Mini</div>
+            <div style="font-weight:700">Coleção 2</div>
+          </article>
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb">Mini</div>
+            <div style="font-weight:700">Coleção 3</div>
+          </article>
+          <article class="card" role="listitem" tabindex="0">
+            <div class="thumb">Mini</div>
+            <div style="font-weight:700">Coleção 4</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- contact area (for submission) -->
+      <section id="contact" style="margin-top:18px">
+        <div class="panel">
+          <h4 style="margin:0 0 8px 0">Enviar teste</h4>
+          <form onsubmit="return false" style="display:flex;flex-direction:column;gap:8px">
+            <input type="text" id="name" placeholder="Seu nome (opcional)" />
+            <input type="email" id="email" placeholder="Email para contato" />
+            <input type="text" id="repo" placeholder="Link do repositório / drive" />
+            <div style="display:flex;gap:8px">
+              <button class="cta" onclick="mockSubmit()">Enviar (mock)</button>
+              <button class="link" type="button" onclick="prefill()">Exemplo</button>
+            </div>
+            <div id="status" style="font-size:13px;color:var(--muted)"></div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer -->
+    <footer style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)">
+      <div style="font-size:13px">© — Template neutro</div>
+      <div style="font-size:13px">Versão: 1.0</div>
+    </footer>
+  </div>
+
+<script>
+/*
+  Notas de implementação:
+  - Código intencionalmente simples para facilitar leitura do avaliador.
+  - Hooks para substituir imagens por srcset/WebP e para integração com Formspree/endpoint.
+  - Preferência por acessibilidade e teclado (tabindex).
+*/
+
+/* scroll helper */
+function scrollToSection(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* pequeno mock de envio (simula comportamento real, sem backend) */
+async function mockSubmit(){
+  const status = document.getElementById('status');
+  status.textContent = 'Enviando...';
+  await new Promise(r => setTimeout(r, 700));
+  status.textContent = 'Enviado (mock). Inclua link do repositório real para completar.';
+}
+
+/* preenche com exemplo para testes locais */
+function prefill(){
+  document.getElementById('name').value = 'Seu Nome';
+  document.getElementById('email').value = 'seu@email.com';
+  document.getElementById('repo').value = 'https://github.com/seu-usuario/seu-repo';
+}
+
+/* progressive enhancement:
+   Se quiser, ao substituir os placeholders por imagens reais, coloque:
+   <img src="thumb.webp" srcset="thumb@2x.webp 2x" loading="lazy" alt="...">
+   e remova as backgrounds lineares.
+*/
+</script>
+</body>
+</html>
